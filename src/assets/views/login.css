@@ -1,0 +1,18 @@
+.login-form{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+.form{
+    width: 14%;
+}
+.form-title{
+    padding:20px 0;
+    font-size: 20px;
+    font-weight: bold;
+}
+.login-btn{
+    width: 100%;
+}

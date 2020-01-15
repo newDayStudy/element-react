@@ -1,0 +1,13 @@
+#root .slide-menu{
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    width: 200px;
+    background-color: #324157;
+}
+.slide-menu a{
+    color: rgba(255,255,255,.6);
+}
+.slide-menu a:hover{
+    color: cornflowerblue;
+}
