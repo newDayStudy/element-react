@@ -79,6 +79,8 @@ export default class Tables extends React.Component{
                     address: '上海市普陀区金沙江路 1516 弄'
                 }
             ],
+            currentPage:1,
+            pageSize:5,
             dialogVisible:false,
             temp: {},
             id:8,
@@ -187,7 +189,20 @@ export default class Tables extends React.Component{
         let currentPage = this.state['page'+pages]
         let data = currentPage
         this.setState({
-            data: [...data]
+            data: [...data],
+            currentPage: pages
+        })
+    }
+    onSizeChange(pager){
+        let {data, page1, page2} = this.state
+        if(pager > 5){
+            data = page1.concat(page2)
+        } else {
+            data = page1
+        }
+        this.setState({
+            data: [...data],
+            pageSize: pager
         })
     }
     render () {
@@ -223,8 +238,10 @@ export default class Tables extends React.Component{
                 ></Table>
                 <Layout.Row>
                     <Layout.Col span="6" offset="18">
-                        <Pagination layout="total,prev, pager, next" pageSize={5} total={8} className="pagination"
+                        <Pagination layout="total,sizes,prev, pager, next" pageSize={this.state.pageSize} currentPage={this.state.currentPage} total={8} className="pagination"
                         onCurrentChange={this.onCurrentChange.bind(this)}
+                        onSizeChange={this.onSizeChange.bind(this)}
+                        pageSizes={[5, 10, 20, 30]}
                         />
                     </Layout.Col>
                 </Layout.Row>
