@@ -86,7 +86,7 @@ export default class Tables extends React.Component{
             id:8,
             addColumns:{
                 name: '',
-                date: '2019-01-11',
+                date: new Date(),
                 address: ''
             }
         }
@@ -217,7 +217,7 @@ export default class Tables extends React.Component{
                         <Input placeholder="请输入地址" value={addColumns.address} onChange={this.onChange.bind(this, 'address')}></Input>
                     </Layout.Col>
                     <Layout.Col span="4" offset="1">
-                        <DatePicker placeholder="请选择日期" value={new Date(addColumns.date || 0)} onChange={date=>{
+                        <DatePicker placeholder="请选择日期" value={new Date(addColumns.date )} onChange={date=>{
                             let {addColumns} = this.state
                             addColumns.date = this.formatDate(date)
                             this.setState({ 
