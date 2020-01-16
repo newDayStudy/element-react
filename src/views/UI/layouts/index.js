@@ -1,5 +1,5 @@
 import React from 'react';
-import {Icon,Layout} from 'element-react';
+import {Layout} from 'element-react';
 
 export default class Layouts extends React.Component{
     render () {

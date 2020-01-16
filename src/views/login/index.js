@@ -1,6 +1,6 @@
 
 import React from 'react';
-import {Input, Form, FormItem, Button} from 'element-react';
+import {Input, Form, Button} from 'element-react';
 import '../../assets/views/login.css';
 export default class Login extends React.Component{
     constructor(props) {
@@ -22,8 +22,11 @@ export default class Login extends React.Component{
         };
     }
     onChange(key, value){
-        this.state.form[key] = value;
-        this.forceUpdate();
+        let {form} = this.state
+        form[key] = value
+        this.setState({
+            form: form
+        })
     }
     onSubmit(e){
         this.setState({

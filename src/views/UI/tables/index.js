@@ -32,59 +32,69 @@ export default class Tables extends React.Component{
                     }
                 }
               ],
-            data: [{
-                id:1,
-                date: '2016-05-02',
-                name: '王小虎1',
-                address: '上海市普陀区金沙江路 1518 弄'
-              }, {
-                id:2,
-                date: '2016-05-04',
-                name: '王小虎2',
-                address: '上海市普陀区金沙江路 1517 弄'
-              }, {
-                id:3,
-                date: '2016-05-01',
-                name: '王小虎3',
-                address: '上海市普陀区金沙江路 1519 弄'
-              }, {
-                id:4,
-                date: '2016-05-03',
-                name: '王小虎4',
-                address: '上海市普陀区金沙江路 1516 弄'
-              },{
-                id:5,
-                date: '2016-05-02',
-                name: '王小虎5',
-                address: '上海市普陀区金沙江路 1518 弄'
-              }, {
-                id:6,
-                date: '2016-05-04',
-                name: '王小虎6',
-                address: '上海市普陀区金沙江路 1517 弄'
-              }, {
-                id:7,
-                date: '2016-05-01',
-                name: '王小虎7',
-                address: '上海市普陀区金沙江路 1519 弄'
-              }, {
-                id:8,
-                date: '2016-05-03',
-                name: '王小虎8',
-                address: '上海市普陀区金沙江路 1516 弄'
-            }],
+            data: [],
+            page1:[
+                {
+                    id:1,
+                    date: '2016-05-02',
+                    name: '王小虎1',
+                    address: '上海市普陀区金沙江路 1518 弄'
+                  }, {
+                    id:2,
+                    date: '2016-05-04',
+                    name: '王小虎2',
+                    address: '上海市普陀区金沙江路 1517 弄'
+                  }, {
+                    id:3,
+                    date: '2016-05-01',
+                    name: '王小虎3',
+                    address: '上海市普陀区金沙江路 1519 弄'
+                  }, {
+                    id:4,
+                    date: '2016-05-03',
+                    name: '王小虎4',
+                    address: '上海市普陀区金沙江路 1516 弄'
+                  },{
+                    id:5,
+                    date: '2016-05-02',
+                    name: '王小虎5',
+                    address: '上海市普陀区金沙江路 1518 弄'
+                  }
+            ],
+            page2:[
+                {
+                    id:6,
+                    date: '2016-05-04',
+                    name: '王小虎6',
+                    address: '上海市普陀区金沙江路 1517 弄'
+                  }, {
+                    id:7,
+                    date: '2016-05-01',
+                    name: '王小虎7',
+                    address: '上海市普陀区金沙江路 1519 弄'
+                  }, {
+                    id:8,
+                    date: '2016-05-03',
+                    name: '王小虎8',
+                    address: '上海市普陀区金沙江路 1516 弄'
+                }
+            ],
             dialogVisible:false,
             temp: {},
-            addColumns:[
-                {
-                    id:9,
-                    name: '李四',
-                    address: '上海市普陀区金沙江路 1518 弄',
-                    disabled: false,
-                    date: '2019-02-18'
-                }
-            ]
+            id:8,
+            addColumns:{
+                name: '',
+                date: '2019-01-11',
+                address: ''
+            }
         }
+    }
+    componentWillMount(){
+        let {page1, data} = this.state
+        data = page1
+        this.setState({
+            data: [...data]
+        })
     }
     handleDelete(id){
         MessageBox.confirm('确定删除此记录吗？','',{
@@ -144,44 +154,66 @@ export default class Tables extends React.Component{
         })
     }
     addColums(){
-        const data = this.state.addColumns;
-        const newData = data.filter(value=>{
-            value.disabled = true
-            return value
+        let {id, addColumns,data} = this.state
+        id++;
+        addColumns['id'] = id;
+        data.push(addColumns)
+        Message({
+            type: 'success',
+            message: '添加成功'
         })
-        newData.push({
-            id: 10,
-            name: '李四1',
-            address: '上海市普陀区金沙江路 1518 弄',
-            disabled: false,
-            date: '2019-02-10'
-        })
+        setTimeout(()=>{
+            this.setState({
+                id: id,
+                addColumns: {},
+                data: [...data]
+            })
+        },3000)
+    }
+    onChange(key, value){
+        const {addColumns} = this.state
+        addColumns[key] = value
         this.setState({
-            addColumns: [...newData]
+            addColumns: addColumns
+        })
+    }
+    formatDate(date){
+        var y = date.getFullYear()
+        var m = date.getMonth() + 1 > 9 ? date.getMonth() + 1 : '0' + (date.getMonth() + 1)
+        var d = date.getDate() > 9 ? date.getDate() : '0' + date.getDate()
+        return y + '-' + m + '-' + d
+    }
+    onCurrentChange(pages){
+        let currentPage = this.state['page'+pages]
+        let data = currentPage
+        this.setState({
+            data: [...data]
         })
     }
     render () {
+        const {addColumns} = this.state
         return (
             <Layout.Row>
-                {
-                    this.state.addColumns.map((value,index)=>
-                        <Layout.Row className="btn-group" key={index}>
-                            <Layout.Col span="4">
-                                <Input placeholder="请输入姓名"></Input> 
-                            </Layout.Col>
-                            <Layout.Col span="4" offset="1">
-                                <Input placeholder="请输入地址"></Input>
-                            </Layout.Col>
-                            <Layout.Col span="4" offset="1">
-                                <DatePicker placeholder="请选择日期"></DatePicker>
-                            </Layout.Col>
-                            <Layout.Col span="4">
-                                <Button type="primary" >添加</Button>
-                                <Button type="primary" onClick={this.addColums.bind(this)} disabled={value.disabled}>再添一行</Button>
-                            </Layout.Col>
-                        </Layout.Row>
-                    )
-                }
+                <Layout.Row className="btn-group" >
+                    <Layout.Col span="4">
+                        <Input placeholder="请输入姓名" value={addColumns.name} onChange={this.onChange.bind(this, 'name')}></Input> 
+                    </Layout.Col>
+                    <Layout.Col span="4" offset="1">
+                        <Input placeholder="请输入地址" value={addColumns.address} onChange={this.onChange.bind(this, 'address')}></Input>
+                    </Layout.Col>
+                    <Layout.Col span="4" offset="1">
+                        <DatePicker placeholder="请选择日期" value={new Date(addColumns.date || 0)} onChange={date=>{
+                            let {addColumns} = this.state
+                            addColumns.date = this.formatDate(date)
+                            this.setState({ 
+                                addColumns: addColumns
+                            })
+                        }}></DatePicker>
+                    </Layout.Col>
+                    <Layout.Col span="4">
+                        <Button type="primary" onClick={this.addColums.bind(this)}>添加</Button>
+                    </Layout.Col>
+                </Layout.Row>
                 
                 <Table
                     stripe={true}
@@ -191,7 +223,9 @@ export default class Tables extends React.Component{
                 ></Table>
                 <Layout.Row>
                     <Layout.Col span="6" offset="18">
-                        <Pagination layout="total,prev, pager, next" total={this.state.data.length} className="pagination"/>
+                        <Pagination layout="total,prev, pager, next" pageSize={5} total={8} className="pagination"
+                        onCurrentChange={this.onCurrentChange.bind(this)}
+                        />
                     </Layout.Col>
                 </Layout.Row>
                 <Dialog
@@ -213,11 +247,8 @@ export default class Tables extends React.Component{
                                 value={new Date(this.state.temp.date)}
                                 placeholder="选择日期"
                                 onChange={date=>{
-                                    var y = date.getFullYear()
-                                    var m = date.getMonth() + 1 > 9 ? date.getMonth() + 1 : '0' + (date.getMonth() + 1)
-                                    var d = date.getDate() > 9 ? date.getDate() : '0' + date.getDate()
                                     const temp = this.state.temp
-                                    temp.date = y + '-' + m + '-' + d
+                                    temp.date = this.formatDate(date)
                                     this.setState({temp: temp})
                                 }}
                                 />
